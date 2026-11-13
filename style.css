@@ -418,3 +418,30 @@ h1, h2, h3, p { overflow-wrap: break-word; }
   .btn:hover { transform: none; }
   .amenities__icon:hover { transform: none; }
 }
+
+/* 9. CORREÇÃO: página mais larga que a tela ------------------------------ */
+html, body { max-width: 100%; overflow-x: hidden; }
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
+}
+main, section, header, footer { max-width: 100%; overflow-x: clip; }
+
+/* Colunas que nunca crescem além da tela */
+@media (max-width: 767px) {
+  .about, .contact, .rooms__grid, .reviews__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .about > *, .contact > *, .rooms__grid > *, .reviews__grid > * { min-width: 0; }
+
+  /* Nada de entrar pelos lados no celular: só sobe e aparece */
+  .reveal--left, .reveal--right { --dx: 0px; }
+  .build { translate: 0 calc(30px * (1 - var(--p, 0))); }
+
+  /* Cabeçalho */
+  .header__row { gap: 1rem; }
+  .logo { font-size: 1.35rem; }
+
+  /* Topo */
+  .hero h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .hero__badge { font-size: .8rem; padding: .4rem .85rem; }
+}
