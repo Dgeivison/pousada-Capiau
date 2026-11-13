@@ -1,0 +1,325 @@
+/* 1. VARIÁVEIS (paleta do projeto original) ------------------------------ */
+:root {
+  --bg: oklch(.975 .015 110);
+  --fg: oklch(.24 .05 145);
+  --muted: oklch(.93 .03 110);
+  --muted-fg: oklch(.45 .04 140);
+  --card: oklch(1 0 0);
+  --primary: oklch(.36 .08 150);
+  --primary-fg: oklch(.98 .02 110);
+  --secondary: oklch(.86 .17 118);      /* verde-limão dos botões */
+  --secondary-fg: oklch(.24 .05 145);
+  --accent: oklch(.72 .12 205);         /* turquesa */
+  --forest: oklch(.2 .045 150);
+  --border: oklch(.88 .04 115);
+  --shadow: 0 20px 50px -20px oklch(.24 .05 145 / .35);
+  --hero-overlay: linear-gradient(180deg, oklch(.2 .045 150 / .35) 0%, oklch(.2 .045 150 / .15) 40%, oklch(.2 .045 150 / .85) 100%);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* 2. BASE ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+h1, h2, h3 { font-family: var(--font-display); margin: 0; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+.icon {
+  width: 1em; height: 1em; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.container { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; }
+.section { padding: 7rem 0; }
+
+/* 3. COMPONENTES --------------------------------------------------------- */
+.eyebrow {
+  font-size: .8rem; font-weight: 800;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+}
+.title {
+  font-size: clamp(2.2rem, 5vw, 3.75rem);
+  font-weight: 600; line-height: 1.1; margin-top: 1rem;
+}
+.lead { margin-top: 1.5rem; font-size: 1.1rem; line-height: 1.7; color: var(--muted-fg); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border-radius: 999px; padding: 1rem 2rem; font-weight: 800;
+  transition: transform .3s;
+}
+.btn:hover { transform: scale(1.05); }
+.btn .icon { font-size: 1.25rem; }
+.btn--gold { background: var(--secondary); color: var(--secondary-fg); }
+.btn--outline {
+  border: 1px solid rgb(255 255 255 / .5); font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+.btn--outline:hover { background: rgb(255 255 255 / .1); transform: none; }
+.btn--primary { background: var(--primary); color: var(--primary-fg); justify-content: center; }
+.btn--primary:hover { transform: scale(1.02); }
+
+.stars { display: inline-flex; gap: 2px; color: var(--secondary); }
+.stars .icon { width: 1rem; height: 1rem; fill: currentColor; }
+
+.photo { background-size: cover; background-position: center; }
+
+/* 4. CABEÇALHO ----------------------------------------------------------- */
+.header {
+  position: fixed; inset: 0 0 auto; z-index: 50;
+  padding: 1.5rem 0; color: #fff; transition: all .5s;
+}
+.header.is-scrolled {
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(12px);
+  padding: .75rem 0; box-shadow: var(--shadow); color: var(--fg);
+}
+.header__row { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.logo small {
+  display: block; font: 600 .7rem var(--font-sans);
+  letter-spacing: .3em; text-transform: uppercase; opacity: .8;
+}
+.header.is-scrolled .logo { color: var(--primary); }
+
+.nav { display: none; align-items: center; gap: 2rem; }
+.nav a { font-size: .9rem; font-weight: 700; }
+.nav a:hover { color: var(--secondary); }
+.header.is-scrolled .nav a:hover { color: var(--primary); }
+.nav .btn { padding: .6rem 1.25rem; font-size: .9rem; color: var(--secondary-fg); }
+.nav .btn:hover { color: var(--secondary-fg); }
+
+.menu-toggle { display: flex; background: none; border: 0; color: inherit; font-size: 1.6rem; cursor: pointer; }
+.mobile-menu {
+  display: none; margin: .75rem 1rem 0; padding: 1.5rem;
+  background: var(--bg); color: var(--fg);
+  border-radius: 1rem; box-shadow: var(--shadow);
+}
+.mobile-menu.is-open { display: block; }
+.mobile-menu a { display: block; padding: .5rem 0; font-weight: 700; }
+.mobile-menu .btn { justify-content: center; padding: .75rem; margin-top: .75rem; }
+
+@media (min-width: 768px) {
+  .nav { display: flex; }
+  .menu-toggle, .mobile-menu { display: none !important; }
+}
+
+/* 5. SEÇÕES -------------------------------------------------------------- */
+/* Hero */
+.hero {
+  position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+  overflow: hidden; color: #fff;
+}
+.hero__bg {
+  position: absolute; inset: 0; animation: kenburns 14s ease-out both;
+  background:
+    url("assets/fachada.jpg"),
+    radial-gradient(circle at 70% 30%, #7fcfa6 0, transparent 45%),
+    linear-gradient(160deg, #1f5a3c, #0d6e5f 55%, #123524);
+  background-size: cover;
+  background-position: center;
+}
+.hero__overlay { position: absolute; inset: 0; background: var(--hero-overlay); }
+.hero__content { position: relative; width: 100%; padding-top: 10rem; padding-bottom: 5rem; }
+.hero__badge {
+  display: inline-flex; align-items: center; gap: .5rem; margin-bottom: 1.25rem;
+  padding: .5rem 1rem; border-radius: 999px; font-size: .9rem;
+  background: rgb(255 255 255 / .15); backdrop-filter: blur(8px);
+}
+.hero h1 { font-size: clamp(3rem, 9vw, 6rem); font-weight: 600; line-height: 1.02; max-width: 56rem; }
+.hero h1 em { color: var(--secondary); }
+.hero__text { font-size: 1.2rem; opacity: .9; max-width: 36rem; margin-top: 1.5rem; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.5rem; }
+
+/* Sobre */
+.about { display: grid; gap: 4rem; align-items: center; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+.stats b { display: block; font-family: var(--font-display); font-size: 2.2rem; color: var(--primary); }
+.stats span { font-size: .85rem; color: var(--muted-fg); }
+.about__pic { position: relative; }
+.about__img {
+  aspect-ratio: 4 / 5; border-radius: 2rem; box-shadow: var(--shadow);
+  background-image:
+    url("assets/piscina.jpg"),
+    linear-gradient(160deg, #0f8f8c, #7fd3d0 45%, #1f5a3c);
+}
+.float-card {
+  position: absolute; bottom: -2rem; left: -1.5rem; padding: 1.25rem;
+  background: var(--card); border-radius: 1rem; box-shadow: var(--shadow);
+  animation: floaty 4s ease-in-out infinite;
+}
+.float-card .icon { font-size: 1.75rem; color: var(--accent); margin-bottom: .5rem; }
+.float-card b { display: block; font-family: var(--font-display); font-size: 1.1rem; }
+.float-card span { font-size: .85rem; color: var(--muted-fg); }
+
+/* Comodidades */
+.amenities { background: var(--primary); color: var(--primary-fg); padding: 5rem 0; }
+.amenities__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; text-align: center; }
+.amenities__icon {
+  width: 4rem; height: 4rem; margin: 0 auto .75rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 1.75rem;
+  background: var(--secondary); color: var(--secondary-fg); transition: transform .3s;
+}
+.amenities__icon:hover { transform: rotate(12deg) scale(1.1); }
+.amenities b { font-weight: 600; }
+
+/* Quartos */
+.rooms__intro { max-width: 42rem; }
+.rooms__grid { display: grid; gap: 2rem; margin-top: 3.5rem; }
+.rooms__img-wrap { border-radius: 2rem; overflow: hidden; min-height: 340px; }
+.rooms__img {
+  height: 100%; min-height: 340px; transition: transform .7s;
+  background-image:
+    url("assets/quarto.jpg"),
+    linear-gradient(150deg, #d9c9a0, #8fb59a 55%, #1f5a3c);
+}
+.rooms__img-wrap:hover .rooms__img { transform: scale(1.05); }
+.rooms__list { display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
+.room {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 1rem; padding: 1.5rem; transition: all .3s;
+}
+.room:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.room h3 { font-size: 1.5rem; font-weight: 600; }
+.room p { margin-top: .5rem; color: var(--muted-fg); }
+
+/* Bonito */
+.bonito { position: relative; overflow: hidden; padding: 10rem 0; color: #fff; text-align: center; }
+.bonito__bg {
+  position: absolute; inset: 0;
+  background:
+    url("assets/bonito.jpg"),
+    radial-gradient(circle at 30% 40%, #3fe0d6, transparent 50%),
+    linear-gradient(160deg, #0f8f8c, #0a5a63);
+  background-size: cover;
+  background-position: center;
+}
+.bonito__overlay { position: absolute; inset: 0; background: oklch(.2 .045 150 / .6); }
+.bonito__content { position: relative; max-width: 48rem; margin: 0 auto; padding: 0 1.5rem; }
+.bonito .eyebrow { color: var(--secondary); }
+.bonito h2 { font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 600; line-height: 1.1; margin-top: 1rem; }
+.bonito__text { max-width: 36rem; margin: 1.5rem auto 0; font-size: 1.1rem; opacity: .9; }
+
+/* Avaliações */
+.reviews { background: var(--muted); padding: 7rem 0; }
+.score { text-align: center; }
+.score b { display: block; font-family: var(--font-display); font-size: 4.5rem; line-height: 1.1; color: var(--primary); }
+.score .stars { margin-top: .5rem; }
+.score p { margin-top: .5rem; color: var(--muted-fg); }
+.reviews__grid { display: grid; gap: 1.5rem; margin-top: 3.5rem; }
+.review { margin: 0; padding: 2rem; background: var(--card); border-radius: 2rem; box-shadow: var(--shadow); }
+.review blockquote { margin: 1rem 0 0; font-family: var(--font-display); font-size: 1.25rem; line-height: 1.35; }
+.review figcaption { margin-top: 1.5rem; font-size: .9rem; font-weight: 600; color: var(--muted-fg); }
+
+/* Contato */
+.contact { display: grid; gap: 3rem; }
+.contact__list { display: grid; gap: 1.5rem; margin-top: 2.5rem; }
+.contact__list a { display: flex; align-items: flex-start; gap: 1rem; }
+.contact__list a:hover { color: var(--primary); }
+.contact__list .icon { font-size: 1.5rem; color: var(--accent); margin-top: 2px; }
+.contact .btn { margin-top: 2.5rem; }
+.contact__map { overflow: hidden; border-radius: 2rem; box-shadow: var(--shadow); }
+.contact__map iframe { display: block; width: 100%; height: 100%; min-height: 400px; border: 0; }
+
+@media (min-width: 768px) {
+  .about, .contact { grid-template-columns: 1fr 1fr; }
+  .amenities__grid { grid-template-columns: repeat(6, 1fr); }
+  .rooms__grid { grid-template-columns: 3fr 2fr; }
+  .reviews__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 6. RODAPÉ E BOTÃO FLUTUANTE -------------------------------------------- */
+.footer { background: var(--forest); color: rgb(255 255 255 / .7); text-align: center; font-size: .9rem; padding: 2.5rem 1rem; }
+.fab {
+  position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 50;
+  width: 3.5rem; height: 3.5rem; border-radius: 50%; font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--secondary); color: var(--secondary-fg); box-shadow: var(--shadow);
+  animation: floaty 4s ease-in-out infinite;
+}
+
+/* 7. ANIMAÇÕES E PROFUNDIDADE (suave) ------------------------------------ */
+@keyframes rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.rise { opacity: 0; animation: rise 1s var(--ease) forwards; }
+
+/* Barra de progresso */
+.progress {
+  position: fixed; top: 0; left: 0; z-index: 60;
+  width: 100%; height: 4px; transform: scaleX(0); transform-origin: left;
+  background: linear-gradient(90deg, var(--accent), var(--secondary));
+}
+
+/* Camadas de parallax (o JS controla "translate" e "scale") */
+.hero__bg { inset: -30% 0 0 0; will-change: translate, scale; }
+.bonito__bg { inset: -20% 0; will-change: translate, scale; }
+.rooms__img { scale: 1.2; will-change: translate; }
+.float-card { will-change: translate; }
+
+/* Formas desfocadas (ficam paradas no desfoque, só se movem) */
+.hero, .amenities, .reviews { position: relative; overflow: hidden; }
+.hero__content { z-index: 1; }
+.amenities .container, .reviews .container { position: relative; z-index: 1; }
+.orb {
+  position: absolute; z-index: 0; border-radius: 50%;
+  filter: blur(60px); opacity: .3; pointer-events: none; will-change: translate;
+}
+.orb--lime { width: 22rem; height: 22rem; background: var(--secondary); top: 5%; left: -6rem; }
+.orb--teal { width: 26rem; height: 26rem; background: var(--accent); bottom: -4rem; right: -8rem; }
+
+/* Montagem no scroll: --p vai de 0 a 1 (controlado pelo JS) */
+.reveal {
+  --dx: 0px; --s0: .96;
+  opacity: var(--p, 0);
+  transform:
+    translate3d(calc(var(--dx) * (1 - var(--p, 0))), calc(48px * (1 - var(--p, 0))), 0)
+    scale(calc(var(--s0) + (1 - var(--s0)) * var(--p, 0)));
+  will-change: transform, opacity;
+}
+.reveal--left  { --dx: -60px; }
+.reveal--right { --dx: 60px; }
+.reveal--zoom  { --s0: .88; }
+.reveal.is-done { transform: none; opacity: 1; will-change: auto; }
+
+/* Avaliações: só a transição do hover */
+.review.reveal { transition: translate .35s var(--ease), box-shadow .35s; }
+.review:hover { translate: 0 -10px; }
+
+/* Cards dos quartos e botão: cada um entra sozinho */
+.build {
+  opacity: var(--p, 0);
+  translate: calc(50px * (1 - var(--p, 0))) 0;
+  scale: calc(.94 + .06 * var(--p, 1));
+}
+
+/* Inclinação 3D dos cards (só ao passar o mouse) */
+.room {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .25s ease-out, box-shadow .3s;
+}
+.room:hover {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+}
+
+/* Títulos palavra por palavra */
+.w {
+  display: inline-block;
+  --wp: clamp(0, calc(var(--p, 1) * (var(--n, 1) * .1 + 1.2) - var(--i, 0) * .1), 1);
+  opacity: var(--wp);
+  transform: translate3d(0, calc((1 - var(--wp)) * 28px), 0);
+}
+
+/* Foto dos quartos "abre" como uma janela */
+.rooms__img-wrap { clip-path: inset(calc((1 - var(--p, 1)) * 15%) round 2rem); }
