@@ -499,3 +499,32 @@ main, section, header, footer { max-width: 100%; overflow-x: clip; }
   .float-card { left: .75rem; }
   .about__pic { max-width: 100%; }
 }
+
+/* 12. FOTOS NÍTIDAS NO CELULAR ------------------------------------------- */
+.hero__bg, .bonito__bg, .rooms__img, .about__img { will-change: auto; }
+
+@media (max-width: 767px) {
+  .hero__bg {
+    inset: 0;
+    animation: none;
+    scale: 1 !important;
+    translate: none !important;
+    background-position: 60% center;   /* troque 60% para mover o enquadramento */
+  }
+  .bonito__bg {
+    inset: 0;
+    scale: 1 !important;
+    translate: none !important;
+  }
+  .rooms__img {
+    scale: 1 !important;
+    translate: none !important;
+  }
+}
+
+/* 13. ENQUADRAMENTO DA FACHADA NO CELULAR -------------------------------- */
+@media (max-width: 767px) {
+  .hero__bg {
+    background-position: 22% center !important;
+  }
+}
